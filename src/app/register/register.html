@@ -1,0 +1,33 @@
+<div class="m-auto p-5 w-72">
+  <p-panel header="Sign Up">
+    <div class="flex flex-col md:flex-row">
+      <form>
+      <div class="flex flex-col items-center justify-center gap-7 py-5">
+          <p-floatlabel>
+            <label for="firstName">First Name</label>
+            <input pInputText id="firstName" [field]="registrationForm.firstName" type="text" />
+          </p-floatlabel>
+          <p-floatlabel>
+            <label for="lastName">Last Name</label>
+            <input pInputText id="lastName" [field]="registrationForm.lastName" type="lastName" /> </p-floatlabel
+          ><p-floatlabel>
+            <label for="email">E-Mail</label>
+            <input pInputText [field]="registrationForm.email" id="email" type="email" /> </p-floatlabel
+          ><p-floatlabel>
+            <label for="password">Password</label>
+            <input pInputText [field]="registrationForm.password"id="password" type="password" />
+          </p-floatlabel>
+          <div class="flex">
+            <p-button label="Sign Up" (click)="onSubmit()" class="w-full max-w-[17.35rem]" />
+          </div>
+          <div class="flex items-center justify-center">
+            <p class="text-center">
+              Already have an account? Click <a class="underline" routerLink="/login">here</a> to
+              login!
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-panel>
+</div>
