@@ -6,16 +6,28 @@
           <p-floatlabel>
             <label for="firstName">First Name</label>
             <input pInputText id="firstName" [field]="registrationForm.firstName" type="text" />
+            @for(error of registrationForm.firstName().errors(); track $index) {
+              <p class="text-red-600">{{ error.message }}</p>
+            }
           </p-floatlabel>
           <p-floatlabel>
             <label for="lastName">Last Name</label>
-            <input pInputText id="lastName" [field]="registrationForm.lastName" type="lastName" /> </p-floatlabel
+            <input pInputText id="lastName" [field]="registrationForm.lastName" type="lastName" />
+            @for(error of registrationForm.lastName().errors(); track $index) {
+              <p class="text-red-600">{{ error.message }}</p>
+            } </p-floatlabel
           ><p-floatlabel>
             <label for="email">E-Mail</label>
-            <input pInputText [field]="registrationForm.email" id="email" type="email" /> </p-floatlabel
+            <input pInputText [field]="registrationForm.email" id="email" type="email" />
+            @for(error of registrationForm.email().errors(); track $index) {
+              <p class="text-red-600">{{ error.message }}</p>
+            } </p-floatlabel
           ><p-floatlabel>
             <label for="password">Password</label>
             <input pInputText [field]="registrationForm.password"id="password" type="password" />
+            @for(error of registrationForm.password().errors(); track $index) {
+              <p class="text-red-600">{{ error.message }}</p>
+            }
           </p-floatlabel>
           <div class="flex">
             <p-button label="Sign Up" (click)="onSubmit()" class="w-full max-w-[17.35rem]" />

@@ -1,6 +1,7 @@
-export interface Registration {
+import { Credentials } from "./credentials";
+
+export interface Registration extends Credentials {
     firstName: string;
     lastName: string;
-    email: string;
-    password: string;
 }
+

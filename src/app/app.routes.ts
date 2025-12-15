@@ -1,12 +1,18 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+
   {
     path: 'login',
-    loadComponent: () => import('./login/login').then((m) => m.Login),
+    loadComponent: () => import('./authentication/login/login').then((m) => m.Login),
   },
   {
     path: 'register',
-    loadComponent: () => import('./register/register').then((m) => m.Register),
+    loadComponent: () => import('./authentication/register/register').then((m) => m.Register),
   },
+    {
+    path: '**',
+    redirectTo: 'login', // TODO: change to landing page when auth guard is implemented
+  },
+  
 ];
