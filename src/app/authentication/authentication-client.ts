@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Registration } from "../models/registration";
-import { Credentials } from "../models/credentials";
+import { Credentials, LoginResponse } from "../models/credentials";
 import { email } from "@angular/forms/signals";
 
 @Injectable({
@@ -17,7 +17,7 @@ export class AuthenticationClient {
         return this.httpClient.post<Registration>(this.BASE_API_URL, userData);
     }
 
-    loginUser(cred: Credentials): Observable<Credentials> {
-        return this.httpClient.post<Credentials>(this.BASE_API_URL + '/login', cred);
+    loginUser(cred: Credentials): Observable<LoginResponse> {
+        return this.httpClient.post<LoginResponse>(this.BASE_API_URL + '/login', cred);
     }
 }

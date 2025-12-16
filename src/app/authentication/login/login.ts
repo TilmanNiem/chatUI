@@ -48,9 +48,11 @@ export class Login {
         .loginUser(value)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          tap((success) => {
-            if (success) {
+          tap((res) => {
+            console.log(res)
+            if (res.token) {
               this.router.navigate(['/register']);
+              localStorage.setItem('token', res.token)
             }
           })
         )
