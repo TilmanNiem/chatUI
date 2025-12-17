@@ -51,7 +51,7 @@ export class Login {
           tap((res) => {
             console.log(res)
             if (res.token) {
-              this.router.navigate(['/register']);
+              this.router.navigate(['/chat']);
               localStorage.setItem('token', res.token)
             }
           })
