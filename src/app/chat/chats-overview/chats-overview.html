@@ -1,1 +1,8 @@
-<p>chats-overview works!</p>
+<div class="p-2">
+    <p>Chats</p>
+    <p-divider></p-divider>
+    @for(chat of chats(); track $index){
+        <app-chat-preview [preview]="chat"></app-chat-preview>
+    }
+
+</div>
