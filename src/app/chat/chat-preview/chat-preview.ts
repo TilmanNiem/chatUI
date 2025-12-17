@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { ChatPreviewModel } from '../../models/chat-preview-model';
+import { ChatPreviewModel } from '../models/chat-preview-model';
 import { CardModule } from 'primeng/card'
 
 @Component({

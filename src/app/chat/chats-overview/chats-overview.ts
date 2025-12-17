@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { DividerModule } from "primeng/divider";
 import { ChatPreview } from '../chat-preview/chat-preview';
-import { ChatPreviewModel } from '../../models/chat-preview-model';
+import { ChatPreviewModel } from '../models/chat-preview-model';
 
 @Component({
   selector: 'app-chats-overview',

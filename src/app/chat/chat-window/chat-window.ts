@@ -1,5 +1,5 @@
 import { Component, input, signal } from '@angular/core';
-import { Message, ReadStatus } from '../../models/messages';
+import { Message, ReadStatus } from '../models/messages';
 
 @Component({
   selector: 'app-chat-window',

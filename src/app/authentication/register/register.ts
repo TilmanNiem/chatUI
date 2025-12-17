@@ -6,7 +6,7 @@ import { PanelModule } from 'primeng/panel';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { RouterModule } from '@angular/router';
 import { email, form, required, Field, minLength } from '@angular/forms/signals';
-import { Registration } from '../../models/registration';
+import { Registration } from '../models/registration';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthenticationClient } from '../authentication-client';
 

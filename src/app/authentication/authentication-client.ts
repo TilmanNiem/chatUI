@@ -1,8 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { Registration } from "../models/registration";
-import { Credentials, LoginResponse } from "../models/credentials";
+import { Registration } from "./models/registration";
+import { Credentials, LoginResponse } from "./models/credentials";
 import { email } from "@angular/forms/signals";
 
 @Injectable({

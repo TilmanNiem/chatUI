@@ -6,7 +6,7 @@ import { PanelModule } from 'primeng/panel';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationClient } from '../authentication-client';
-import { Credentials } from '../../models/credentials';
+import { Credentials } from '../models/credentials';
 import { email, Field, form, required } from '@angular/forms/signals';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
