@@ -1,10 +1,14 @@
 @let chat = preview();
 
-<!--
-@if(chat) {
-<p-card [header]="chat.username">
-    <p>{{chat.lastMessage}}</p>
-</p-card>
-}
 
- use p-avatar -->
+@if(chat) {
+  <div class="flex flex-col">
+    <div class="flex items-center">
+        <p-avatar [label]="chat.user.username.at(0)" shape="circle" size="large" />
+      <div>
+        <p class="text-bold"> {{ chat.user.username }}</p>
+        <p>{{chat.previewMessage?.content}}</p>
+      </div>
+    </div>
+  </div>
+}

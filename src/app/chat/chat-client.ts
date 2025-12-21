@@ -13,6 +13,6 @@ export class ChatClient {
   private readonly BASE_URL = API_BASE_URL + '/chats';
 
   getChatPreviews(userId: string): Observable<ChatPreview[]> {
-    return this.httpClient.get<ChatPreview[]>(this.BASE_URL + '/chats/preview', {headers: { 'userId': userId}});
+    return this.httpClient.get<ChatPreview[]>(this.BASE_URL + '/' + userId+'/previews');
   }
 }
