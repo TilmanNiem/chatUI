@@ -1,5 +1,5 @@
 import { Component, input, signal } from '@angular/core';
-import { Message, ReadStatus } from '../models/messages';
+import { MessageRead} from '../models/message-models';
 
 @Component({
   selector: 'app-chat-window',
@@ -10,27 +10,5 @@ import { Message, ReadStatus } from '../models/messages';
 export class ChatWindow {
   chatId = input.required<string>();
 
-  messages = signal<Message[]>([
-    {
-      date: new Date(),
-      content: "du stinkst",
-      readStatus: ReadStatus.UNREAD,
-      senderId: "123",
-      recieverId: "456"
-    },
-    {
-      date: new Date(),
-      content: "du stinkst",
-      readStatus: ReadStatus.UNREAD,
-      senderId: "123",
-      recieverId: "456"
-    },
-    {
-      date: new Date(),
-      content: "du stinkst",
-      readStatus: ReadStatus.UNREAD,
-      senderId: "123",
-      recieverId: "456"
-    },
-  ]);
+  messages = signal<MessageRead[]>([])
 }

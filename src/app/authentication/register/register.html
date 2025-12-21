@@ -12,11 +12,19 @@
           </p-floatlabel>
           <p-floatlabel>
             <label for="lastName">Last Name</label>
-            <input pInputText id="lastName" [field]="registrationForm.lastName" type="lastName" />
+            <input pInputText id="lastName" [field]="registrationForm.lastName" type="text" />
             @for(error of registrationForm.lastName().errors(); track $index) {
               <p class="text-red-600">{{ error.message }}</p>
             } </p-floatlabel
-          ><p-floatlabel>
+          >
+        <p-floatlabel>
+          <label for="username">Username</label>
+          <input pInputText id="username" [field]="registrationForm.username" type="text" />
+          @for(error of registrationForm.username().errors(); track $index) {
+            <p class="text-red-600">{{ error.message }}</p>
+          }
+        </p-floatlabel>
+        <p-floatlabel>
             <label for="email">E-Mail</label>
             <input pInputText [field]="registrationForm.email" id="email" type="email" />
             @for(error of registrationForm.email().errors(); track $index) {

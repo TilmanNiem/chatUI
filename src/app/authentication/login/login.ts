@@ -6,7 +6,7 @@ import { PanelModule } from 'primeng/panel';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationClient } from '../authentication-client';
-import { Credentials } from '../models/credentials';
+import { LoginCredentials } from '../models/user_models';
 import { email, Field, form, required } from '@angular/forms/signals';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
@@ -30,17 +30,17 @@ export class Login {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
 
-  private readonly credentials = signal<Credentials>({
-    email: '',
+  private readonly credentials = signal<LoginCredentials>({
+    username: '',
     password: '',
   });
 
   loginForm = form(this.credentials, (r) => {
-    email(r.email, { message: 'Please enter a valid email address.' });
+    required(r.username);
     required(r.password);
   });
 
-  onSubmit() {
+  onSubmit(): void {
     const value = this.loginForm().value();
 
     if (this.loginForm().valid()) {

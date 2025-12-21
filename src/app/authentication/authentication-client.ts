@@ -1,9 +1,9 @@
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { Registration } from "./models/registration";
-import { Credentials, LoginResponse } from "./models/credentials";
 import { email } from "@angular/forms/signals";
+import { API_BASE_URL } from "../constants";
+import {LoginCredentials, LoginResponse, UserCreate} from './models/user_models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,13 @@ import { email } from "@angular/forms/signals";
 export class AuthenticationClient {
     private readonly httpClient = inject(HttpClient);
 
-    private readonly BASE_API_URL = 'http://127.0.0.1:8000/users';
+    private readonly BASE_URL = API_BASE_URL + '/users';
 
-    registerUser(userData: Registration): Observable<Registration> {
-        return this.httpClient.post<Registration>(this.BASE_API_URL, userData);
+    registerUser(userData: UserCreate): Observable<UserCreate> {
+        return this.httpClient.post<UserCreate>(this.BASE_URL, userData);
     }
 
-    loginUser(cred: Credentials): Observable<LoginResponse> {
-        return this.httpClient.post<LoginResponse>(this.BASE_API_URL + '/login', cred);
+    loginUser(cred: LoginCredentials): Observable<LoginResponse> {
+        return this.httpClient.post<LoginResponse>(this.BASE_URL + '/login', cred);
     }
 }

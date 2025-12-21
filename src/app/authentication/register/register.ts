@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, linkedSignal, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { InputText } from 'primeng/inputtext';
@@ -6,9 +6,9 @@ import { PanelModule } from 'primeng/panel';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { RouterModule } from '@angular/router';
 import { email, form, required, Field, minLength } from '@angular/forms/signals';
-import { Registration } from '../models/registration';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthenticationClient } from '../authentication-client';
+import {UserCreate} from '../models/user_models';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +28,8 @@ export class Register {
   private readonly authClient = inject(AuthenticationClient);
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly registration = signal<Registration>({
+  private readonly registration = signal<UserCreate>({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -38,12 +39,14 @@ export class Register {
   registrationForm = form(this.registration, (r) => {
     required(r.firstName);
     required(r.lastName);
+    required(r.username);
     email(r.email, { message: 'Please enter a valid email address.' });
     required(r.password);
 
     minLength(r.password, 6, { message: 'Password must be at least 6 characters long.' });
     minLength(r.firstName, 1, { message: 'First name is required.' });
     minLength(r.lastName, 1, { message: 'Last name is required.' });
+    minLength(r.username, 1, { message: 'Username is required.' });
   });
 
   onSubmit() {
