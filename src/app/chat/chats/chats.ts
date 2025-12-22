@@ -3,7 +3,7 @@ import { SplitterModule } from 'primeng/splitter'
 import { ChatsOverview } from "../chats-overview/chats-overview";
 import { ChatWindow } from "../chat-window/chat-window";
 import { PanelModule } from 'primeng/panel';
- 
+
 @Component({
   selector: 'app-chats',
   imports: [SplitterModule, ChatsOverview, ChatWindow, PanelModule],
@@ -11,7 +11,5 @@ import { PanelModule } from 'primeng/panel';
   styleUrl: './chats.css',
 })
 export class Chats {
-
-  activeChat = signal<string>("123")
 
 }

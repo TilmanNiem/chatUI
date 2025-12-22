@@ -54,7 +54,6 @@ export class Login {
             console.log(res)
             if (res.token) {
               localStorage.setItem('token', res.token)
-              this.chatStore.setUserId(res.id)
               this.router.navigate(['/chat']);
             }
           })

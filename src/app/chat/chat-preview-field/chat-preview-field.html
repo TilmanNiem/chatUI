@@ -1,14 +1,13 @@
 @let chat = preview();
 
-
 @if(chat) {
-  <div class="flex flex-col">
-    <div class="flex items-center">
+    <div class="flex flex-row items-center gap-3" (click)="openChat(chat.chatId)">
+      <div class="flex">
         <p-avatar [label]="chat.user.username.at(0)" shape="circle" size="large" />
-      <div>
-        <p class="text-bold"> {{ chat.user.username }}</p>
+      </div>
+      <div class="flex flex-col">
+        <p class="font-bold"> {{ chat.user.username }}</p>
         <p>{{chat.previewMessage?.content}}</p>
       </div>
     </div>
-  </div>
 }

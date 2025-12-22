@@ -1,14 +1,21 @@
-import { Component, input, signal } from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { MessageRead} from '../models/message-models';
+import {Divider} from 'primeng/divider';
+import {ChatStore} from '../chat-store';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-chat-window',
-  imports: [],
+  imports: [
+    Divider,
+    JsonPipe
+  ],
   templateUrl: './chat-window.html',
   styleUrl: './chat-window.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatWindow {
-  chatId = input.required<string>();
+  private readonly store = inject(ChatStore);
 
-  messages = signal<MessageRead[]>([])
+  protected readonly activeChat = this.store.activeChat
 }

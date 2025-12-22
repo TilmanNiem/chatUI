@@ -1,8 +1,14 @@
-<div class="p-2">
-    <p>Chats</p>
+<div class="py-2">
+  @if(loading() === false ) {
+    <p class="px-3 font-bold text-2xl">Chats</p>
     <p-divider></p-divider>
-    @for(chat of chats(); track $index){
+    <div class="flex flex-col gap-3 px-3">
+      @for(chat of chatPreviews(); track $index){
         <app-chat-preview-field [preview]="chat"></app-chat-preview-field>
-    }
-
+      }
+    </div>
+  } @else {
+    <div class="flex items-center"></div>
+    <p-progressSpinner></p-progressSpinner>
+  }
 </div>

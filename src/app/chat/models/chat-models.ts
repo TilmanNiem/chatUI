@@ -13,6 +13,7 @@ export interface ChatRead extends ChatCreated {
 }
 
 export interface ChatPreview {
+  chatId: string;
   user: UserRead;
   isGroup: string;
   groupName: string | null;

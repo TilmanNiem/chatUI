@@ -1,1 +1,19 @@
-<p>chat-window works!</p>
+@let chat = activeChat();
+
+<div class="py-2">
+  @if(chat) {
+    <p class="px-3 font-bold text-2xl">{{ chat.groupName }}</p>
+  }
+
+<p-divider></p-divider>
+
+  @if(chat) {
+    @for(msg of chat.messages; track $index) {
+      <p>{{msg.content}}</p>
+    }
+  }
+
+
+
+
+</div>
