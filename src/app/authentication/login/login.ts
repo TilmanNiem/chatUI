@@ -7,9 +7,10 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationClient } from '../authentication-client';
 import { LoginCredentials } from '../models/user_models';
-import { email, Field, form, required } from '@angular/forms/signals';
+import { Field, form, required } from '@angular/forms/signals';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
+import {ChatStore} from '../../chat/chat-store';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ export class Login {
   private readonly authClient = inject(AuthenticationClient);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
+  private readonly chatStore = inject(ChatStore);
 
   private readonly credentials = signal<LoginCredentials>({
     username: '',
@@ -51,8 +53,9 @@ export class Login {
           tap((res) => {
             console.log(res)
             if (res.token) {
-              this.router.navigate(['/chat']);
               localStorage.setItem('token', res.token)
+              this.chatStore.setUserId(res.id)
+              this.router.navigate(['/chat']);
             }
           })
         )

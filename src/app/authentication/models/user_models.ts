@@ -19,6 +19,6 @@ export interface LoginCredentials {
   password: string;
 }
 
-export interface LoginResponse extends LoginCredentials {
+export interface LoginResponse extends UserRead {
   token: string
 }
