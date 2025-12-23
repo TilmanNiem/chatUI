@@ -1,13 +1,16 @@
 import {ChatPreview, ChatRead} from './models/chat-models';
-import {patchState, signalStore, withMethods, withState } from '@ngrx/signals'
+import {patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals'
 import {ChatClient} from './chat-client';
 import {inject} from '@angular/core';
 import {switchMap, tap, pipe} from 'rxjs';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {HttpErrorResponse} from '@angular/common/http';
 import { tapResponse } from '@ngrx/operators'
+import {AuthenticationClient} from '../authentication/authentication-client';
+import {UserRead} from '../authentication/models/user_models';
 
 type ChatState = {
+  activeUser: UserRead | null;
   chatPreviews: ChatPreview[];
   chatPreviewsLoading: boolean;
   activeChat: ChatRead | null;
@@ -15,6 +18,7 @@ type ChatState = {
 }
 
 const initialState: ChatState = {
+  activeUser: null,
   chatPreviews: [],
   chatPreviewsLoading: false,
   activeChat: null,
@@ -24,7 +28,7 @@ const initialState: ChatState = {
 export const ChatStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withMethods((store, client = inject(ChatClient)) => ({
+  withMethods((store, client = inject(ChatClient), authClient = inject(AuthenticationClient)) => ({
     openChat: rxMethod<string>(
       pipe(
         tap(() => patchState(store, { activeChatLoading: true })),
@@ -58,6 +62,21 @@ export const ChatStore = signalStore(
           )
         } )
       )
+    ),
+    getCurrentUser: rxMethod<void>(
+      pipe(
+        switchMap(() => {
+          return authClient.getCurrentUser().pipe(
+            tapResponse({
+              next: (user: UserRead) =>
+                patchState(store, { activeUser: user}),
+              error: (err: HttpErrorResponse) => {
+                console.error(err.message); //todo: toast message
+              },
+            })
+          )
+        })
+      )
     )
-  }))
+  })),
 )

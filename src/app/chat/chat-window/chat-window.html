@@ -1,19 +1,26 @@
 @let chat = activeChat();
+@let user = activeUser();
 
 <div class="py-2">
-  @if(chat) {
+  @if(chat && user) {
     <p class="px-3 font-bold text-2xl">{{ chat.groupName }}</p>
   }
 
 <p-divider></p-divider>
 
-  @if(chat) {
-    @for(msg of chat.messages; track $index) {
-      <p>{{msg.content}}</p>
+  <div class="flex flex-col-reverse">
+    @if(chat && user) {
+      @for(msg of chat.messages; track $index) {
+        <div class="flex p-2" [class.justify-end]="user.id === msg.senderId"> <!-- add condition -->
+          <div class="border border-solid border-gray-500 rounded-2xl w-72 justify-end">
+            <div class="px-2">
+              <p>{{ msg.content }}</p>
+              <p> {{ msg.sendDate | date: 'shortTime'}}</p>
+            </div>
+          </div>
+        </div>
+      }
     }
-  }
-
-
-
-
+  </div>
 </div>
+

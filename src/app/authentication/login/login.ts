@@ -51,7 +51,6 @@ export class Login {
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           tap((res) => {
-            console.log(res)
             if (res.token) {
               localStorage.setItem('token', res.token)
               this.router.navigate(['/chat']);
