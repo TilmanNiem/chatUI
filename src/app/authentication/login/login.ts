@@ -30,7 +30,6 @@ export class Login {
   private readonly authClient = inject(AuthenticationClient);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
-  private readonly chatStore = inject(ChatStore);
 
   private readonly credentials = signal<LoginCredentials>({
     username: '',
