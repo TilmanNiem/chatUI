@@ -1,19 +1,27 @@
-import {Component, DestroyRef, effect, inject, OnInit, signal, Signal} from '@angular/core';
-import { DividerModule } from "primeng/divider";
-import { ChatPreviewField } from '../chat-preview-field/chat-preview-field'
-import {ChatStore} from '../chat-store';
-import {ProgressSpinner} from 'primeng/progressspinner';
-import { Button } from "primeng/button";
-import { DialogModule } from 'primeng/dialog'
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { DividerModule } from 'primeng/divider';
+import { ChatPreviewField } from '../chat-preview-field/chat-preview-field';
+import { ChatStore } from '../chat-store';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { Button } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { form, required, validate, Field } from '@angular/forms/signals';
+import { form, required, Field, minLength } from '@angular/forms/signals';
 import { ChatCreate } from '../models/chat-models';
-import { Checkbox } from 'primeng/checkbox'
-
+import { Checkbox } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-chats-overview',
-  imports: [DividerModule, ChatPreviewField, ProgressSpinner, Button, DialogModule, InputTextModule, Checkbox, Field],
+  imports: [
+    DividerModule,
+    ChatPreviewField,
+    ProgressSpinner,
+    Button,
+    DialogModule,
+    InputTextModule,
+    Checkbox,
+    Field,
+  ],
   templateUrl: './chats-overview.html',
   styleUrl: './chats-overview.css',
 })
@@ -23,24 +31,24 @@ export class ChatsOverview implements OnInit {
   protected readonly chatPreviews = this.chatStore.chatPreviews;
   protected readonly loading = this.chatStore.chatPreviewsLoading;
 
-  protected showDialog = signal<boolean>(false)
+  protected showDialog = signal<boolean>(false);
 
   private readonly chatCreate = signal<ChatCreate>({
     userIds: [''],
     isGroup: false,
-    groupName: null
+    groupName: null,
   });
-
 
   chatCreateForm = form(this.chatCreate, (r) => {
     required(r.userIds);
     required(r.isGroup);
+
+    minLength(r.userIds, 1);
   });
 
   ngOnInit() {
     this.chatStore.getChatPreviews();
   }
-
 
   showCreateChatDialog(): void {
     this.showDialog.set(true);
@@ -50,18 +58,14 @@ export class ChatsOverview implements OnInit {
     const value = this.chatCreateForm().value();
 
     if (this.chatCreateForm().valid()) {
-      console.log(value)
-      //this.chatStore.createChat(value)
+      console.log(value);
     }
   }
 
   incrementUserCount(): void {
-    const value = this.chatCreate();
-    this.chatCreate.set({
-      ...value,
-      userIds: value.userIds.concat([''])
-    })
+    this.chatCreate.update((state) => ({
+      ...state,
+      userIds: [...state.userIds, ''],
+    }));
   }
-
-
 }

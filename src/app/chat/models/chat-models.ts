@@ -1,4 +1,4 @@
-import { MessageRead } from "./message-models";
+import { MessageRead } from './message-models';
 import { UserRead } from '../../authentication/models/user_models';
 
 export interface ChatCreate {
@@ -7,15 +7,11 @@ export interface ChatCreate {
   groupName: string | null;
 }
 
-
-export interface ChatCreated {
+export interface ChatRead {
   id: string;
   users: UserRead[];
   isGroup: string;
   groupName: string | null;
-}
-
-export interface ChatRead extends ChatCreated {
   messages: MessageRead[];
 }
 

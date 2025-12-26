@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { API_BASE_URL } from '../constants';
-import {ChatPreview, ChatRead} from './models/chat-models';
-import {Observable} from 'rxjs';
+import { ChatCreate, ChatPreview, ChatRead } from './models/chat-models';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,10 @@ export class ChatClient {
   }
 
   getChatById(id: string): Observable<ChatRead> {
-    console.log(id)
     return this.httpClient.get<ChatRead>(this.BASE_URL + '/' + id);
+  }
+
+  createChat(chat: ChatCreate): Observable<ChatRead> {
+    return this.httpClient.post<ChatRead>(this.BASE_URL, chat);
   }
 }
