@@ -22,3 +22,9 @@ export interface LoginCredentials {
 export interface LoginResponse extends UserRead {
   token: string
 }
+
+export interface UserFilter {
+  userIds?: string[];
+  usernames?: string[];
+  userEmails?: string[];
+}

@@ -32,6 +32,7 @@
     "@ngrx/operators": "^21.0.1",
     "@ngrx/signals": "^21.0.0",
     "@primeuix/themes": "^2.0.2",
+    "primeicons": "^7.0.0",
     "primeng": "^21.0.1",
     "rxjs": "~7.8.0",
     "tailwindcss-primeui": "^0.6.1",
@@ -44,6 +45,7 @@
     "@tailwindcss/postcss": "^4.1.12",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
+    "prettier": "^3.7.4",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"

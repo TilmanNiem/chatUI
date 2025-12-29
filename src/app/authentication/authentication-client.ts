@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { API_BASE_URL } from "../constants";
-import {LoginCredentials, LoginResponse, UserCreate, UserRead} from './models/user_models';
+import {LoginCredentials, LoginResponse, UserCreate, UserFilter, UserRead} from './models/user_models';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +22,13 @@ export class AuthenticationClient {
 
     getCurrentUser(): Observable<UserRead> {
       return this.httpClient.get<UserRead>(this.BASE_URL + '/current');
+    }
+
+    searchUsers(userFilter: UserFilter): Observable<UserRead[]> {
+      return this.httpClient.post<UserRead[]>(this.BASE_URL + '/search', userFilter);
+    }
+
+    getUserById(userId: string): Observable<UserRead> {
+      return this.httpClient.get<UserRead>(this.BASE_URL + '/' + userId);
     }
 }

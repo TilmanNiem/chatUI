@@ -1,12 +1,12 @@
 <div class="py-2">
-  @if(loading() === false ) {
+  @if (loading() === false) {
     <div class="px-3 flex flex-row justify-between items-center">
       <p class="font-bold text-2xl">Chats</p>
       <p-button (click)="showCreateChatDialog()" label="Create chat"></p-button>
     </div>
     <p-divider></p-divider>
     <div class="flex flex-col gap-3 px-3">
-      @for(chat of chatPreviews(); track $index){
+      @for (chat of chatPreviews(); track $index) {
         <app-chat-preview-field [preview]="chat"></app-chat-preview-field>
       }
     </div>
@@ -18,36 +18,45 @@
 
 
 <p-dialog [(visible)]="showDialog" [modal]="true" [style]="{ width: '25rem' }">
-    <ng-template #header>
-        <div class="inline-flex items-center justify-center gap-2">
-            <span class="font-bold whitespace-nowrap">Create chat</span>
-        </div>
-    </ng-template>
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <span class="font-bold whitespace-nowrap">Create chat</span>
+    </div>
+  </ng-template>
+  <div class="flex flex-col gap-7">
     <div class="flex">
-      <p-checkbox inputId="isGroup" [field]="chatCreateForm.isGroup" />
+      <p-checkbox inputId="isGroup" [value]="showGroupNameInput" [(ngModel)]="showGroupNameInput"/>
       <label for="isGroup" class="ml-2"> Create a group chat </label>
     </div>
-    @if(chatCreateForm.isGroup().value()) {
-      <div class="flex items-center gap-4 mb-4">
-        <label for="groupName" class="font-semibold w-24">GroupName</label>
-        <input pInputText id="groupName" class="flex-auto" autocomplete="off" />
-    </div>
-    }
-    @for(user of chatCreateForm.userIds().value(); track $index) {
-      <div class="flex items-center gap-4 mb-4">
-        <label for="username" class="font-semibold w-24">Username</label>
-        <input pInputText id="username" class="flex-auto" autocomplete="off" />
+
+    @if (showGroupNameInput()) {
+      <div>
+        <p-float-label class="flex items-center gap-4 mb-4">
+          <label for="groupName" class="font-semibold w-24">GroupName</label>
+          <input pInputText id="groupName" class="flex-auto" autocomplete="off"/>
+        </p-float-label>
       </div>
     }
-    
 
-    @if(chatCreateForm.isGroup().value()) {
-      <div class="flex justify-end items-center gap-4 mb-4">
-        <p-button label="Add user" icon="pi pi-plus-circle" iconPos="right" (onClick)="incrementUserCount()" />
-    </div>
+    <p-floatlabel class="flex items-center gap-4 mb-4">
+      <label for="username" class="font-semibold w-24">Username</label>
+      <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="usernameInput"/>
+      <p-button icon="pi pi-minus-circle" [rounded]="true" [disabled]="!usernameInput()" [outlined]="true"
+                (onClick)="addUser()"/>
+    </p-floatlabel>
+
+    @for (userId of chatCreateForm.userIds().value(); track $index) {
+      <div class="flex items-center gap-2">
+        <label>{{ userId | username | async }}</label>
+        <p-button icon="pi pi-minus-circle" [rounded]="true" [outlined]="true" (onClick)="removeUser(userId)"/>
+      </div>
     }
-    <ng-template #footer>
-        <p-button label="Cancel" [text]="true" severity="secondary" (click)="showDialog.set(false)"  />
-        <p-button label="Save" (onClick)="onSubmit()" [outlined]="true" severity="secondary" (click)="showDialog.set(false)" />
-    </ng-template>
+  </div>
+
+
+  <ng-template #footer>
+    <p-button label="Cancel" [text]="true" severity="secondary" (click)="showDialog.set(false)"/>
+    <p-button label="Save" (onClick)="onSubmit()" [outlined]="true" severity="secondary"
+              (click)="showDialog.set(false)"/>
+  </ng-template>
 </p-dialog>
