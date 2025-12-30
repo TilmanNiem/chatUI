@@ -8,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { tapResponse } from '@ngrx/operators';
 import { AuthenticationClient } from '../authentication/authentication-client';
 import { UserRead } from '../authentication/models/user_models';
-import { MessageCreate } from './models/message-models';
+import { MessageCreate, MessageRead } from './models/message-models';
 import { MessageClient } from './mesage-client';
 
 type ChatState = {
@@ -18,6 +18,8 @@ type ChatState = {
   activeChat: ChatRead | null;
   activeChatLoading: boolean;
   messageSending: boolean;
+  socket: WebSocket | null;
+  messages: MessageRead[];
 };
 
 const initialState: ChatState = {
@@ -27,6 +29,8 @@ const initialState: ChatState = {
   activeChat: null,
   activeChatLoading: false,
   messageSending: false,
+  socket: null,
+  messages: [],
 };
 
 export const ChatStore = signalStore(
@@ -46,7 +50,11 @@ export const ChatStore = signalStore(
             return client.getChatById(id).pipe(
               tapResponse({
                 next: (chat: ChatRead) =>
-                  patchState(store, { activeChat: chat, activeChatLoading: false }),
+                  patchState(store, {
+                    activeChat: chat,
+                    messages: chat.messages,
+                    activeChatLoading: false,
+                  }),
                 error: (err: HttpErrorResponse) => {
                   patchState(store, { activeChatLoading: false });
                   console.error(err.message); //todo: toast message
@@ -97,6 +105,7 @@ export const ChatStore = signalStore(
                 next: (chat: ChatRead) => {
                   patchState(store, {
                     activeChat: chat,
+                    messages: chat.messages,
                     activeChatLoading: false,
                     chatPreviewsLoading: false,
                   }); //todo: update chat previews list
@@ -110,25 +119,47 @@ export const ChatStore = signalStore(
           }),
         ),
       ),
-      //sendMessage: rxMethod<MessageCreate>(
-      //  pipe(
-      //    tap(() => patchState(store, { messageSending: true })),
-      //    switchMap((message) => {
-      //      return msgClient.sendMessage(message).pipe(
-      //        tapResponse({
-      //          next: () =>
-      //            patchState(store, {
-      //              messageSending: false,
-      //            }),
-      //          error: (err: HttpErrorResponse) => {
-      //            patchState(store, { messageSending: false });
-      //            console.error(err.message); //todo: toast message
-      //          },
-      //        }),
-      //      );
-      //    }),
-      //  ),
-      //),
+      sendMessage: rxMethod<MessageCreate>(
+        pipe(
+          tap(() => patchState(store, { messageSending: true })),
+          tap((message) => {
+            const socket = store.socket();
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              socket.send(JSON.stringify(message));
+            } else {
+              console.error('WebSocket is not connected.');
+            }
+          }),
+        ),
+      ),
     }),
   ),
+
+  // WebSocket setup and teardown
+  withHooks({
+    onInit(store) {
+      const clientId = Math.floor(Math.random() * 1000).toString();
+      patchState(store, { socket: new WebSocket(`ws://localhost:8000/ws/${clientId}`) });
+      const socket = store.socket();
+      if (socket) {
+        socket.onmessage = (event) => {
+          console.log('patch', event.data);
+          patchState(store, {
+            messages: [...store.messages(), JSON.parse(event.data) as MessageRead],
+          });
+        };
+
+        socket.onerror = (error) => {
+          console.error('WebSocket error:', error);
+        };
+
+        socket.onclose = () => {
+          console.warn('WebSocket connection closed');
+        };
+      }
+    },
+    onDestroy(store) {
+      store.socket()?.close();
+    },
+  }),
 );
