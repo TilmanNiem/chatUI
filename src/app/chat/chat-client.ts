@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { API_BASE_URL } from '../constants';
 import { ChatCreate, ChatPreview, ChatRead } from './models/chat-models';
 import { Observable } from 'rxjs';
+import { MessageCreate } from './models/message-models';
 
 @Injectable({
   providedIn: 'root',

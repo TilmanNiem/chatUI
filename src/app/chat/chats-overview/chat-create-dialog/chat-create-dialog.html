@@ -1,0 +1,36 @@
+<div class="flex flex-col gap-7">
+  <div class="flex">
+    <p-checkbox inputId="isGroup" [ngModel]="showGroupNameInput()"
+                (ngModelChange)="showGroupNameInput.set(!showGroupNameInput())"/>
+    <label for="isGroup" class="ml-2"> Create a group chat </label>
+  </div>
+
+  @if (showGroupNameInput()) {
+    <div>
+      <p-float-label class="flex items-center gap-4 mb-4">
+        <label for="groupName" class="font-semibold w-24">GroupName</label>
+        <input pInputText id="groupName" [ngModel]="groupName()"
+               (ngModelChange)="groupName.set($event)" class="flex-auto"
+               autocomplete="off"/>
+      </p-float-label>
+    </div>
+  }
+
+  <p-floatlabel class="flex items-center gap-4 mb-4">
+    <label for="username" class="font-semibold w-24">Username</label>
+    <input pInputText id="username" class="flex-auto mr-4" autocomplete="off" [(ngModel)]="usernameInput"
+           (keydown.enter)="addUser()"/>
+    <p-button icon="pi pi-plus-circle" [rounded]="true" [disabled]="!usernameInput()" [outlined]="true"
+              (onClick)="addUser()"/>
+  </p-floatlabel>
+
+  @for (userId of userIds(); track $index) {
+    <div class="flex items-center gap-2">
+      <label>{{ userId | username | async }}</label>
+      <p-button icon="pi pi-minus-circle" [rounded]="true" [outlined]="true" (onClick)="removeUser(userId)"/>
+    </div>
+  }
+</div>
+
+
+
