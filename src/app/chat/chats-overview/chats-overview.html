@@ -2,7 +2,8 @@
   @if (loading() === false) {
     <div class="px-3 flex flex-row justify-between items-center">
       <p class="font-bold text-2xl">Chats</p>
-      <p-button (click)="showCreateChatDialog()" label="Create chat"></p-button>
+      <p-button icon="pi pi-plus-circle" [rounded]="true" [outlined]="true"
+                (onClick)="showCreateChatDialog()"/>
     </div>
     <p-divider></p-divider>
     <div class="flex flex-col gap-3 px-3">
@@ -23,40 +24,14 @@
       <span class="font-bold whitespace-nowrap">Create chat</span>
     </div>
   </ng-template>
-  <div class="flex flex-col gap-7">
-    <div class="flex">
-      <p-checkbox inputId="isGroup" [value]="showGroupNameInput" [(ngModel)]="showGroupNameInput"/>
-      <label for="isGroup" class="ml-2"> Create a group chat </label>
-    </div>
 
-    @if (showGroupNameInput()) {
-      <div>
-        <p-float-label class="flex items-center gap-4 mb-4">
-          <label for="groupName" class="font-semibold w-24">GroupName</label>
-          <input pInputText id="groupName" class="flex-auto" autocomplete="off"/>
-        </p-float-label>
-      </div>
-    }
 
-    <p-floatlabel class="flex items-center gap-4 mb-4">
-      <label for="username" class="font-semibold w-24">Username</label>
-      <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="usernameInput"/>
-      <p-button icon="pi pi-minus-circle" [rounded]="true" [disabled]="!usernameInput()" [outlined]="true"
-                (onClick)="addUser()"/>
-    </p-floatlabel>
-
-    @for (userId of chatCreateForm.userIds().value(); track $index) {
-      <div class="flex items-center gap-2">
-        <label>{{ userId | username | async }}</label>
-        <p-button icon="pi pi-minus-circle" [rounded]="true" [outlined]="true" (onClick)="removeUser(userId)"/>
-      </div>
-    }
-  </div>
-
+  <app-chat-create-dialog (showDialogChange)="showDialog.set($event)"
+                          (chatCreateFormChange)="this.chatCreateForm.set($event)"></app-chat-create-dialog>
 
   <ng-template #footer>
     <p-button label="Cancel" [text]="true" severity="secondary" (click)="showDialog.set(false)"/>
-    <p-button label="Save" (onClick)="onSubmit()" [outlined]="true" severity="secondary"
-              (click)="showDialog.set(false)"/>
+    <p-button label="Save" (onClick)="onSubmit(); showDialog.set(false) " [outlined]="true"
+              severity="secondary"/>
   </ng-template>
 </p-dialog>

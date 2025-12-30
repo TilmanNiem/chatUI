@@ -41,10 +41,10 @@ export const ChatStore = signalStore(
                 patchState(store, { activeChatLoading: false });
                 console.error(err.message); //todo: toast message
               },
-            })
+            }),
           );
-        })
-      )
+        }),
+      ),
     ),
     getChatPreviews: rxMethod<void>(
       pipe(
@@ -58,10 +58,10 @@ export const ChatStore = signalStore(
                 patchState(store, { chatPreviewsLoading: false });
                 console.error(err.message); //todo: toast message
               },
-            })
+            }),
           );
-        })
-      )
+        }),
+      ),
     ),
     getCurrentUser: rxMethod<void>(
       pipe(
@@ -72,26 +72,33 @@ export const ChatStore = signalStore(
               error: (err: HttpErrorResponse) => {
                 console.error(err.message); //todo: toast message
               },
-            })
+            }),
           );
-        })
-      )
+        }),
+      ),
     ),
     createChat: rxMethod<ChatCreate>(
       pipe(
         tap(() => patchState(store, { chatPreviewsLoading: true, activeChatLoading: true })),
         switchMap((chat) => {
+          chat.userIds.push(store.activeUser()?.id!);
           return client.createChat(chat).pipe(
             tapResponse({
-              next: (chat: ChatRead) => patchState(store, { activeChat: chat }),
+              next: (chat: ChatRead) => {
+                patchState(store, {
+                  activeChat: chat,
+                  activeChatLoading: false,
+                  chatPreviewsLoading: false,
+                }); //todo: update chat previews list
+              },
               error: (err: HttpErrorResponse) => {
                 patchState(store, { chatPreviewsLoading: false, activeChatLoading: false });
                 console.error(err.message); //todo: toast message
               },
-            })
+            }),
           );
-        })
-      )
+        }),
+      ),
     ),
-  }))
+  })),
 );

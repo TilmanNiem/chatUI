@@ -1,13 +1,24 @@
 @let chat = preview();
 
-@if(chat) {
-    <div class="flex flex-row items-center gap-3" (click)="openChat(chat.chatId)">
+@if (chat) {
+  <div class="flex flex-row items-center gap-3" (click)="openChat(chat.chatId)">
+    @if (chat.isGroup && chat.groupName) {
       <div class="flex">
-        <p-avatar [label]="chat.user.username.at(0)" shape="circle" size="large" />
+        <p-avatar [label]="chat.groupName.at(0)" shape="circle" size="large"/>
+      </div>
+      <div class="flex flex-col">
+        <p class="font-bold"> {{ chat.groupName }}</p>
+        <p>{{ chat.previewMessage?.content }}</p>
+      </div>
+    } @else if (chat.user?.username) {
+      <div class="flex">
+        <p-avatar [label]="chat.user.username.at(0)" shape="circle" size="large"/>
       </div>
       <div class="flex flex-col">
         <p class="font-bold"> {{ chat.user.username }}</p>
-        <p>{{chat.previewMessage?.content}}</p>
+        <p>{{ chat.previewMessage?.content }}</p>
       </div>
-    </div>
+    }
+
+  </div>
 }
