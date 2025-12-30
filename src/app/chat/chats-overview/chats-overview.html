@@ -1,11 +1,10 @@
-<div class="py-2">
+<div class="pt-2 ">
   @if (loading() === false) {
-    <div class="px-3 flex flex-row justify-between items-center">
+    <div class="px-3 pb-5 flex flex-row justify-between items-center">
       <p class="font-bold text-2xl">Chats</p>
       <p-button icon="pi pi-plus-circle" [rounded]="true" [outlined]="true"
                 (onClick)="showCreateChatDialog()"/>
     </div>
-    <p-divider></p-divider>
     <div class="flex flex-col gap-3 px-3">
       @for (chat of chatPreviews(); track $index) {
         <app-chat-preview-field [preview]="chat"></app-chat-preview-field>

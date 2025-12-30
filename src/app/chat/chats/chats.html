@@ -1,7 +1,10 @@
-<div class="m-3 border-2 border-solid border-gray-200 rounded-md">
-    <p-splitter [panelSizes]="[25, 75] " class="h-screen">
-  <ng-template #panel><app-chats-overview></app-chats-overview></ng-template>
-  <ng-template #panel><app-chat-window></app-chat-window></ng-template>
+<p-splitter [panelSizes]="[20, 80]" [minSizes]="[15,70]" class="h-screen">
+  <ng-template #panel>
+    <app-chats-overview></app-chats-overview>
+  </ng-template>
+  <ng-template #panel>
+    <app-chat-window></app-chat-window>
+  </ng-template>
 </p-splitter>
-</div>
+
 

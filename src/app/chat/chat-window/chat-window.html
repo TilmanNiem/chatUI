@@ -2,25 +2,36 @@
 @let user = activeUser();
 
 @if (chat && user) {
-  <div class="py-2">
-    <p class="px-3 font-bold text-2xl">{{ chatHeader() }}</p>
+  <div class="flex flex-col h-[99vh]">
+    <div class=" flex flex-col">
+      <p class="p-3 font-bold text-2xl">{{ chatHeader() }}</p>
+      <p-divider></p-divider>
 
-    <p-divider></p-divider>
+    </div>
 
-    <div class="flex flex-col-reverse">
+
+    <div class="flex flex-col flex-1 justify-end">
       @if (chat && user) {
         @for (msg of chat.messages; track $index) {
-          <div class="flex p-2" [class.justify-end]="user.id === msg.senderId"> <!-- add condition -->
-            <div class="border border-solid border-gray-500 rounded-2xl w-72 justify-end">
-              <div class="px-2">
-                <p>{{ msg.content }}</p>
-                <p> {{ msg.sendDate | date: 'shortTime' }}</p>
+          <div class="flex p-2" [class.justify-end]="user.id === msg.senderId">
+            <div>
+              @if (chat.isGroup && user.id !== msg.senderId) {
+                <p> {{ msg.senderId | username | async }}</p>
+              }
+              <div class="border border-solid border-gray-500 rounded-2xl w-72 justify-end">
+
+                <div class="px-2">
+                  <p>{{ msg.content }}</p>
+                  <p> {{ msg.sendDate | date: 'shortTime' }}</p>
+                </div>
               </div>
             </div>
+
           </div>
         }
       }
     </div>
+
 
     <p-divider></p-divider>
 

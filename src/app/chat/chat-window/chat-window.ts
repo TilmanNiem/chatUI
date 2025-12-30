@@ -12,10 +12,20 @@ import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UsernamePipe } from '../username-pipe';
 
 @Component({
   selector: 'app-chat-window',
-  imports: [Divider, DatePipe, CommonModule, InputText, Button, ReactiveFormsModule, FormsModule],
+  imports: [
+    Divider,
+    DatePipe,
+    CommonModule,
+    InputText,
+    Button,
+    ReactiveFormsModule,
+    FormsModule,
+    UsernamePipe,
+  ],
   templateUrl: './chat-window.html',
   styleUrl: './chat-window.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
