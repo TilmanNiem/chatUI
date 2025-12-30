@@ -110,25 +110,25 @@ export const ChatStore = signalStore(
           }),
         ),
       ),
-      sendMessage: rxMethod<MessageCreate>(
-        pipe(
-          tap(() => patchState(store, { messageSending: true })),
-          switchMap((message) => {
-            return msgClient.sendMessage(message).pipe(
-              tapResponse({
-                next: () =>
-                  patchState(store, {
-                    messageSending: false,
-                  }),
-                error: (err: HttpErrorResponse) => {
-                  patchState(store, { messageSending: false });
-                  console.error(err.message); //todo: toast message
-                },
-              }),
-            );
-          }),
-        ),
-      ),
+      //sendMessage: rxMethod<MessageCreate>(
+      //  pipe(
+      //    tap(() => patchState(store, { messageSending: true })),
+      //    switchMap((message) => {
+      //      return msgClient.sendMessage(message).pipe(
+      //        tapResponse({
+      //          next: () =>
+      //            patchState(store, {
+      //              messageSending: false,
+      //            }),
+      //          error: (err: HttpErrorResponse) => {
+      //            patchState(store, { messageSending: false });
+      //            console.error(err.message); //todo: toast message
+      //          },
+      //        }),
+      //      );
+      //    }),
+      //  ),
+      //),
     }),
   ),
 );

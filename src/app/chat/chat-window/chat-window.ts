@@ -13,6 +13,7 @@ import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsernamePipe } from '../username-pipe';
+import { MessageClient } from '../mesage-client';
 
 @Component({
   selector: 'app-chat-window',
@@ -32,9 +33,17 @@ import { UsernamePipe } from '../username-pipe';
 })
 export class ChatWindow implements OnInit {
   private readonly store = inject(ChatStore);
+  private readonly messageClient = inject(MessageClient);
 
   protected readonly activeChat = this.store.activeChat;
   protected readonly activeUser = this.store.activeUser;
+
+  /* EXPERIMENTAL */
+
+  messages: string[] = [];
+  clientId = Math.floor(Math.random() * 1000).toString();
+
+  /* END EXPERIMENTAL */
 
   protected readonly chatHeader = computed(() => {
     const chat = this.activeChat();
@@ -53,6 +62,13 @@ export class ChatWindow implements OnInit {
 
   ngOnInit(): void {
     this.store.getCurrentUser();
+    this.messageClient.connect(this.clientId).subscribe((message) => {
+      this.messages.push(message);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.messageClient.disconnect();
   }
 
   sendMessage(): void {
@@ -68,7 +84,9 @@ export class ChatWindow implements OnInit {
       updateDate: new Date(),
       senderId: user.id,
     };
-    this.store.sendMessage(message);
+    // this.store.sendMessage(message);
     this.messageInput.set(null);
+
+    this.messageClient.sendMessage(message);
   }
 }
