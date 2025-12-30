@@ -3,7 +3,7 @@
 
 @if (chat && user) {
   <div class="py-2">
-    <p class="px-3 font-bold text-2xl">{{ chat.groupName }}</p>
+    <p class="px-3 font-bold text-2xl">{{ chatHeader() }}</p>
 
     <p-divider></p-divider>
 
@@ -24,10 +24,15 @@
 
     <p-divider></p-divider>
 
-    <input pInputText id="username" class="flex-auto mr-4" [(ngModel)]="messageInput"
-           (keydown.enter)="sendMessage()"/>
-    <p-button icon="pi pi-send" [rounded]="true" [disabled]="!messageInput()" [outlined]="true"
-              (onClick)="sendMessage()"/>
+
+    <div class="flex-none px-2">
+      <div class="flex items-center">
+        <input pInputText id="message" class="flex-1 mr-3" [value]="messageInput()"
+               (input)="messageInput.set($any($event.target).value)" (keydown.enter)="sendMessage()"/>
+        <p-button icon="pi pi-send" [rounded]="true" [disabled]="!messageInput()" [outlined]="true"
+                  (onClick)="sendMessage()"/>
+      </div>
+    </div>
   </div>
 }
 

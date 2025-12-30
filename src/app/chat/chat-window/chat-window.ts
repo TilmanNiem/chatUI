@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { Divider } from 'primeng/divider';
 import { ChatStore } from '../chat-store';
 import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
@@ -18,6 +25,19 @@ export class ChatWindow implements OnInit {
 
   protected readonly activeChat = this.store.activeChat;
   protected readonly activeUser = this.store.activeUser;
+
+  protected readonly chatHeader = computed(() => {
+    const chat = this.activeChat();
+    const activeUser = this.activeUser();
+    if (!chat || !activeUser) {
+      return '';
+    }
+
+    if (chat.isGroup) return chat.groupName;
+
+    const otherParticipant = chat.users.find((user) => user.id !== activeUser.id);
+    return otherParticipant ? otherParticipant.username : '';
+  });
 
   protected readonly messageInput = signal<string | null>(null);
 
