@@ -10,6 +10,7 @@ import { AuthenticationClient } from '../authentication/authentication-client';
 import { UserRead } from '../authentication/models/user_models';
 import { MessageCreate, MessageRead } from './models/message-models';
 import { MessageClient } from './mesage-client';
+import { chai } from 'vitest';
 
 type ChatState = {
   activeUser: UserRead | null;
@@ -18,7 +19,6 @@ type ChatState = {
   activeChat: ChatRead | null;
   activeChatLoading: boolean;
   messageSending: boolean;
-  socket: WebSocket | null;
   messages: MessageRead[];
 };
 
@@ -29,7 +29,6 @@ const initialState: ChatState = {
   activeChat: null,
   activeChatLoading: false,
   messageSending: false,
-  socket: null,
   messages: [],
 };
 
@@ -123,13 +122,9 @@ export const ChatStore = signalStore(
         pipe(
           tap(() => patchState(store, { messageSending: true })),
           tap((message) => {
-            const socket = store.socket();
-            if (socket && socket.readyState === WebSocket.OPEN) {
-              socket.send(JSON.stringify(message));
-            } else {
-              console.error('WebSocket is not connected.');
-            }
+            msgClient.sendMessage(message);
           }),
+          tap(() => patchState(store, { messageSending: false })),
         ),
       ),
     }),
@@ -137,29 +132,18 @@ export const ChatStore = signalStore(
 
   // WebSocket setup and teardown
   withHooks({
-    onInit(store) {
-      const clientId = Math.floor(Math.random() * 1000).toString();
-      patchState(store, { socket: new WebSocket(`ws://localhost:8000/ws/${clientId}`) });
-      const socket = store.socket();
-      if (socket) {
-        socket.onmessage = (event) => {
-          console.log('patch', event.data);
+    onInit(store, msgClient = inject(MessageClient)) {
+      msgClient.socket$.subscribe((msg) => {
+        const incomingChatId = (msg as any)?.chatId;
+        const activeChatId = store.activeChat()?.id;
+
+        if (!incomingChatId || incomingChatId === activeChatId) {
           patchState(store, {
-            messages: [...store.messages(), JSON.parse(event.data) as MessageRead],
+            messages: [...store.messages(), msg as MessageRead],
+            messageSending: false,
           });
-        };
-
-        socket.onerror = (error) => {
-          console.error('WebSocket error:', error);
-        };
-
-        socket.onclose = () => {
-          console.warn('WebSocket connection closed');
-        };
-      }
-    },
-    onDestroy(store) {
-      store.socket()?.close();
+        }
+      });
     },
   }),
 );

@@ -1,18 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
-import { API_BASE_URL } from '../constants';
-import { ChatCreate, ChatPreview, ChatRead } from './models/chat-models';
-import { Observable, Subject } from 'rxjs';
-import { MessageCreate, MessageRead } from './models/message-models';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { webSocket } from 'rxjs/webSocket';
+import { Injectable, OnDestroy } from '@angular/core';
+import { MessageCreate } from './models/message-models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MessageClient {
-  private socket!: WebSocket;
-  private readonly httpClient = inject(HttpClient);
-  private messages = new Subject<string>();
+export class MessageClient implements OnDestroy {
+  private token = localStorage.getItem('token') ?? '';
+  socket$ = webSocket(`ws://localhost:8000/ws?token=${this.token}`);
 
-  private readonly BASE_URL = API_BASE_URL + '/messages';
+  ngOnDestroy(): void {
+    this.socket$.complete();
+  }
+
+  sendMessage(msg: MessageCreate): void {
+    this.socket$.next(msg);
+  }
 }
