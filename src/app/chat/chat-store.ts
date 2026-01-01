@@ -19,7 +19,6 @@ type ChatState = {
   activeChat: ChatRead | null;
   activeChatLoading: boolean;
   messageSending: boolean;
-  messages: MessageRead[];
 };
 
 const initialState: ChatState = {
@@ -29,7 +28,6 @@ const initialState: ChatState = {
   activeChat: null,
   activeChatLoading: false,
   messageSending: false,
-  messages: [],
 };
 
 export const ChatStore = signalStore(
@@ -51,7 +49,6 @@ export const ChatStore = signalStore(
                 next: (chat: ChatRead) =>
                   patchState(store, {
                     activeChat: chat,
-                    messages: chat.messages,
                     activeChatLoading: false,
                   }),
                 error: (err: HttpErrorResponse) => {
@@ -104,7 +101,6 @@ export const ChatStore = signalStore(
                 next: (chat: ChatRead) => {
                   patchState(store, {
                     activeChat: chat,
-                    messages: chat.messages,
                     activeChatLoading: false,
                     chatPreviewsLoading: false,
                   }); //todo: update chat previews list
@@ -129,17 +125,35 @@ export const ChatStore = signalStore(
       ),
     }),
   ),
-
-  // WebSocket setup and teardown
+  //Subscribe to incoming messages from the websocket
   withHooks({
     onInit(store, msgClient = inject(MessageClient)) {
       msgClient.socket$.subscribe((msg) => {
         const incomingChatId = (msg as any)?.chatId;
         const activeChatId = store.activeChat()?.id;
+        const activeChat = store.activeChat();
 
-        if (!incomingChatId || incomingChatId === activeChatId) {
+        if (activeChat && (!incomingChatId || incomingChatId === activeChatId)) {
+          const updatedChat = {
+            ...activeChat,
+            messages: [...activeChat.messages, msg as MessageRead],
+          };
+
+          const updatedPreviews = store.chatPreviews().map((preview) => {
+            if (preview.chatId === updatedChat.id) {
+              return {
+                ...preview,
+                previewMessage: msg as MessageRead,
+              } as ChatPreview;
+            }
+            return preview;
+          });
+
+          console.log(updatedPreviews);
+
           patchState(store, {
-            messages: [...store.messages(), msg as MessageRead],
+            activeChat: updatedChat,
+            chatPreviews: updatedPreviews,
             messageSending: false,
           });
         }

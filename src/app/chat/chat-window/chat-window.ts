@@ -36,7 +36,6 @@ export class ChatWindow implements OnInit {
 
   protected readonly activeChat = this.store.activeChat;
   protected readonly activeUser = this.store.activeUser;
-  protected readonly messages = this.store.messages;
 
   protected readonly chatHeader = computed(() => {
     const chat = this.activeChat();
@@ -44,7 +43,6 @@ export class ChatWindow implements OnInit {
     if (!chat || !activeUser) {
       return '';
     }
-
     if (chat.isGroup) return chat.groupName;
 
     const otherParticipant = chat.users.find((user) => user.id !== activeUser.id);
