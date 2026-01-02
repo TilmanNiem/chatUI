@@ -149,8 +149,6 @@ export const ChatStore = signalStore(
             return preview;
           });
 
-          console.log(updatedPreviews);
-
           patchState(store, {
             activeChat: updatedChat,
             chatPreviews: updatedPreviews,

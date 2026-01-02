@@ -1,19 +1,23 @@
 import {
+  AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
+  ElementRef,
   inject,
   OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import { Divider } from 'primeng/divider';
 import { ChatStore } from '../chat-store';
-import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsernamePipe } from '../username-pipe';
-import { MessageClient } from '../mesage-client';
+import { ChatPreview } from '../models/chat-models';
 
 @Component({
   selector: 'app-chat-window',
@@ -31,7 +35,9 @@ import { MessageClient } from '../mesage-client';
   styleUrl: './chat-window.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatWindow implements OnInit {
+export class ChatWindow implements OnInit, AfterViewChecked {
+  private readonly scrollContainer = viewChild<ElementRef<HTMLDivElement>>('scrollContainer');
+
   private readonly store = inject(ChatStore);
 
   protected readonly activeChat = this.store.activeChat;
@@ -55,6 +61,17 @@ export class ChatWindow implements OnInit {
     this.store.getCurrentUser();
   }
 
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    const container = this.scrollContainer()?.nativeElement;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }
+
   sendMessage(): void {
     const chat = this.activeChat();
     const user = this.activeUser();
@@ -70,5 +87,8 @@ export class ChatWindow implements OnInit {
     };
     this.messageInput.set(null);
     this.store.sendMessage(message);
+    setTimeout(() => {
+      this.scrollToBottom(); //TODO: find smarter way
+    }, 50);
   }
 }
