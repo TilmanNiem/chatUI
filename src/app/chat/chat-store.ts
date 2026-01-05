@@ -9,7 +9,7 @@ import { tapResponse } from '@ngrx/operators';
 import { AuthenticationClient } from '../authentication/authentication-client';
 import { UserRead } from '../authentication/models/user_models';
 import { MessageCreate, MessageRead } from './models/message-models';
-import { MessageClient } from './mesage-client';
+import { MessageClient } from './message-client';
 import { chai } from 'vitest';
 
 type ChatState = {
