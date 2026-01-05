@@ -1,59 +1,105 @@
-# ChatUI
+# Chat UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
+A modern chat application built with Angular 21, featuring real-time messaging with WebSockets, signal-based state management, and a UI powered by PrimeNG.
 
-## Development server
+## 🎯 Project Overview
 
-To start a local development server, run:
+This is a learning project focused on exploring:
+- **WebSocket APIs** for real-time communication
+- **Angular Signals** and the new signal-based forms
+- **NgRx Signal Store** for state management
+- **PrimeNG** UI components with Tailwind CSS
 
+
+## 🎓 Learning Goals
+
+This project serves as a practical exploration of:
+- Modern Angular features (signals, signal store)
+- Real-time communication patterns
+- State management strategies
+- UI component libraries integration
+- TypeScript best practices
+
+## ✨ Features
+
+- 🔐 User authentication (login/register)
+- 💬 Real-time chat messaging
+- 👥 Multiple chat rooms
+- 🎨 Modern UI with PrimeNG and Tailwind CSS
+- 📱 Responsive design
+- ⚡ Signal-based reactive state management
+
+## 🛠️ Tech Stack
+
+- **Framework:** Angular 21
+- **State Management:** NgRx Signals & Signal Store
+- **UI Library:** PrimeNG
+- **Styling:** Tailwind CSS
+- **Real-time Communication:** WebSockets
+- **Language:** TypeScript
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- npm (comes with Node.js)
+
+### Installation
+
+1. Clone the repository
 ```bash
-ng serve
+git clone <repository-url>
+cd chatUI
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. Install dependencies
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+3. Start the development server
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+4. Open your browser and navigate to `http://localhost:4300`
 
-To build the project run:
+## 📜 Available Scripts
 
-```bash
-ng build
+- `npm start` - Run the development server on port 4300
+- `npm run build` - Build the project for production
+- `npm run watch` - Build in watch mode for development
+- `npm test` - Run unit tests
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── authentication/     # Auth components and services
+│   │   ├── login/
+│   │   ├── register/
+│   │   └── models/
+│   └── chat/              # Chat functionality
+│       ├── chat-window/
+│       ├── chats-overview/
+│       └── models/
+└── ...
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🤝 Contributing
 
-## Running unit tests
+Contributions are welcome! This is a learning project, so feel free to:
+- Report bugs
+- Suggest new features
+- Submit pull requests
+- Share improvements
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+**Note:** This is primarily a learning project and may contain imperfections or experimental approaches.
 
-```bash
-ng test
-```
+## 📝 License
 
-## Running end-to-end tests
+This project is open source and available for educational purposes.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
